@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#33333d"
+    tools:context=".AdminActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:gravity="center"
+        android:text="@string/attendence"
+        android:textColor="#37efba"
+        android:textSize="38sp" />
+
+    <android.support.v7.widget.CardView
+        android:layout_width="360dp"
+        android:layout_height="310dp"
+        app:cardBackgroundColor="#f2f2f2"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="180dp">
+
+        <TextView
+            android:text="Email"
+            android:textSize="14sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:textColor="#007d51"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/et_admin_email"
+            android:inputType="textEmailAddress"
+            android:layout_marginTop="40dp"
+            android:layout_marginLeft="10dp"
+            android:text="szyaehdid@gmail.com"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:text="Password"
+            android:textSize="14sp"
+            android:layout_marginTop="100dp"
+            android:textColor="#007d51"
+            android:layout_marginLeft="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/et_admin_password"
+            android:inputType="textPassword"
+            android:layout_marginTop="130dp"
+            android:layout_marginLeft="10dp"
+            android:text="Zahidzahid@2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/admin_login"
+            android:backgroundTint="#007d51"
+            android:background="@drawable/button_bg"
+            android:layout_marginTop="200dp"
+            android:layout_marginLeft="100dp"
+            android:layout_marginRight="100dp"
+            android:text="Login"
+            android:textColor="#fff"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/main_page"
+            android:text="@string/go_back"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:textColor="#007d51"
+            android:layout_marginTop="270dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <ProgressBar
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:id="@+id/admin_progress"
+            android:layout_gravity="center"
+            android:visibility="visible"/>
+
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>

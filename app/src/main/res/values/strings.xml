@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Attendence</string>
+    <string name="attendence">ATTENDENCE</string>
+    <string name="admin_click_here">Admin?</string>
+    <string name="click_here"><u>Click Here</u></string>
+    <string name="go_back"><u>Go Back</u></string>
+    <string name="proceed"><u>Proceed</u></string>
+</resources>
