@@ -60,8 +60,8 @@ public class UpdateTeacherActivity extends AppCompatActivity {
                 else
                 {
                     progressBar.setVisibility(View.VISIBLE);
-                    db.collection("Teachers_list").document(given_id).get()
-                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    db.collection("Teachers_list").document(given_id)
+                            .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                     if (task.isSuccessful())
@@ -79,31 +79,7 @@ public class UpdateTeacherActivity extends AppCompatActivity {
                                             pass.setText(given_pass);
                                             confpass.setText(given_pass);
 
-                                           // ids.setFocusable(false);
-
-//                                            name.setFocusable(true);
-//                                            subname.setFocusable(true);
-//                                            pass.setFocusable(true);
-//                                            confpass.setFocusable(true);
-
-                                            update_name = name.getText().toString();
-                                            update_pass = pass.getText().toString();
-                                            update_conf_pass = confpass.getText().toString();
-                                            update_sub = subname.getText().toString();
-
-                                            if(!(update_pass.equals(update_conf_pass)))
-                                            {
-                                                Toast.makeText(getApplicationContext(),"Password mismatch",Toast.LENGTH_SHORT).show();
-                                            }
-                                            else
-                                            {
-                                                list.put("ID",given_id);
-                                                list.put("Name",update_name);
-                                                list.put("password",update_pass);
-                                                list.put("Subject Name",update_sub);
-                                                updatebtn.setEnabled(true);
-                                                progressBar.setVisibility(View.GONE);
-                                            }
+                                            call();
                                         }
                                         if(!(given_id.equals(fetched_id))){
                                             updatebtn.setEnabled(false);
@@ -164,5 +140,34 @@ public class UpdateTeacherActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void call() {
+
+        update_name = name.getText().toString();
+        update_pass = pass.getText().toString();
+        update_conf_pass = confpass.getText().toString();
+        update_sub = subname.getText().toString();
+
+        ids.setFocusable(false);
+        name.setFocusable(true);
+        subname.setFocusable(true);
+        pass.setFocusable(true);
+        confpass.setFocusable(true);
+
+        if(!(update_pass.equals(update_conf_pass)))
+        {
+            Toast.makeText(getApplicationContext(),"Password mismatch",Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            list.put("ID",given_id);
+            list.put("Name",update_name);
+            list.put("password",update_pass);
+            list.put("Subject Name",update_sub);
+            updatebtn.setEnabled(true);
+            progressBar.setVisibility(View.GONE);
+        }
+
     }
 }
