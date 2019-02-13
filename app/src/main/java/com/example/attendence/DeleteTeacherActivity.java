@@ -1,5 +1,6 @@
 package com.example.attendence;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -98,9 +100,9 @@ public class DeleteTeacherActivity extends AppCompatActivity {
                     if(!(t_name.getText().toString().equals("")))
                     {
                         db.collection("Teachers_list").document(given_id)
-                                .delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                .delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
-                            public void onComplete(@NonNull Task<Void> task) {
+                            public void onSuccess(@NonNull Void task) {
                                 mprogressBar.setVisibility(View.GONE);
                                 t_id.setText("");
                                 t_name.setText("");
@@ -117,5 +119,10 @@ public class DeleteTeacherActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(getApplicationContext(),AChoiceActivity.class);
+        startActivity(intent);
     }
 }

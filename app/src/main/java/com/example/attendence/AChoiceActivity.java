@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 public class AChoiceActivity extends AppCompatActivity {
 
-    TextView addteacher,updateteacher,deleteteacher;
+    TextView addteacher,addstudent,updateteacher,deleteteacher;
     Button adminlogout;
 
     @Override
@@ -19,6 +19,7 @@ public class AChoiceActivity extends AppCompatActivity {
 
         adminlogout = findViewById(R.id.admin_logout);
         addteacher = findViewById(R.id.add_teacher);
+        addstudent = findViewById(R.id.add_student);
         updateteacher = findViewById(R.id.update_teacher);
         deleteteacher = findViewById(R.id.delete_teacher);
 
@@ -34,6 +35,14 @@ public class AChoiceActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(AChoiceActivity.this,AddTeacherActivity.class));
+                finish();
+            }
+        });
+
+        addstudent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(AChoiceActivity.this,AddStudentActivity.class));
                 finish();
             }
         });

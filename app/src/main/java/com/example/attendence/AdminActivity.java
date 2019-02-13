@@ -49,9 +49,15 @@ public class AdminActivity extends AppCompatActivity {
                 adminprogress.setVisibility(View.VISIBLE);
                 id = admin_id.getText().toString();
                 pass = admin_pass.getText().toString();
-                if(id.equals("") && pass.equals("")){
+                if(id.equals(""))
+                {
                     admin_id.setError("Required");
+                    adminprogress.setVisibility(View.GONE);
+                }
+                else if(pass.equals(""))
+                {
                     admin_pass.setError("Required");
+                    adminprogress.setVisibility(View.GONE);
                 }
                 else
                 {
@@ -82,5 +88,9 @@ public class AdminActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+    @Override
+    public void onBackPressed() {
+        //
     }
 }

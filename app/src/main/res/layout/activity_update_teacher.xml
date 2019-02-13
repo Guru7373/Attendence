@@ -34,13 +34,14 @@
                 android:layout_marginTop="70dp">
 
                 <EditText
-                    android:id="@+id/et_name_update"
+                    android:enabled="false"
+                    android:id="@+id/et_update_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Name"
-                    android:focusable="false"
                     android:maxLines="1"
                     android:paddingLeft="10dp"/>
+
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -49,11 +50,13 @@
                 android:layout_marginTop="20dp">
 
                 <EditText
-                    android:id="@+id/et_id_update"
+                    android:enabled="true"
+                    android:id="@+id/et_update_id"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="ID"
                     android:paddingLeft="10dp"
+                    android:maxLines="1"
                     android:inputType="number"
                     android:maxLength="3" />
 
@@ -67,12 +70,13 @@
                 app:passwordToggleTint="@color/colorPrimary">
 
                 <EditText
-                    android:id="@+id/et_password_update"
+                    android:enabled="false"
+                    android:id="@+id/et_update_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Password"
-                    android:focusable="false"
                     android:paddingLeft="10dp"
+                    android:maxLines="1"
                     android:inputType="textPassword" />
 
             </android.support.design.widget.TextInputLayout>
@@ -85,12 +89,13 @@
                 app:passwordToggleTint="@color/colorPrimary">
 
                 <EditText
-                    android:id="@+id/et_conf_password_update"
+                    android:enabled="false"
+                    android:id="@+id/et_update_conf_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Confirm Password"
-                    android:focusable="false"
                     android:paddingLeft="10dp"
+                    android:maxLines="1"
                     android:inputType="textPassword" />
 
             </android.support.design.widget.TextInputLayout>
@@ -101,11 +106,12 @@
                 android:layout_marginTop="230dp">
 
                 <EditText
-                    android:id="@+id/et_subject_update"
+                    android:enabled="false"
+                    android:id="@+id/et_update_subject"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Subject Name"
-                    android:focusable="true"
+                    android:maxLines="1"
                     android:paddingLeft="10dp" />
 
             </android.support.design.widget.TextInputLayout>
