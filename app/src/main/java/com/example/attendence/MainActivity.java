@@ -1,9 +1,12 @@
 package com.example.attendence;
 
+import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,6 +26,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
 
 import static android.widget.Toast.makeText;
 
@@ -52,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.teach_progress);
 
         progressBar.setVisibility(View.GONE);
+
         teach_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,27 +72,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this,AdminActivity.class));
-                finish();
             }
         });
     }
 
     private void call() {
         progressBar.setVisibility(View.VISIBLE);
-//        if(user_pass.equals("") )//&& user_id.equals(""))
-//        {
-//          //  id.setError("Required");
-//            pass.setError("Required");
-//            progressBar.setVisibility(View.GONE);
-//        }
         if(user_id.equals(""))
         {
             id.setError("Required");
             progressBar.setVisibility(View.GONE);
         }
-        else if(user_pass.equals("") )//&& user_id.equals(""))
+        else if(user_pass.equals(""))
         {
-            //  id.setError("Required");
             pass.setError("Required");
             progressBar.setVisibility(View.GONE);
         }
@@ -106,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
                             {
                                 progressBar.setVisibility(View.GONE);
                                 Intent intent = new Intent(getApplicationContext(),TChoiceActivity.class);
+                                intent.putExtra("Teacher_ID",user_id);
                                 startActivity(intent);
                                 Toast toast = Toast.makeText(getApplicationContext(),"Login Successful",Toast.LENGTH_SHORT);
                                 View view = toast.getView();
@@ -137,6 +136,26 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Are you sure you want to exit?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @SuppressLint("NewApi")
+                    public void onClick(DialogInterface dialog, int id) {
+                        MainActivity.this.finish();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
 }

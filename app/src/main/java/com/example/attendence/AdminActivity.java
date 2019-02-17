@@ -1,7 +1,9 @@
 package com.example.attendence;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -40,7 +42,6 @@ public class AdminActivity extends AppCompatActivity {
         admin_pass = findViewById(R.id.et_admin_password);
 
         adminprogress = findViewById(R.id.admin_progress);
-        //authentication
 
         adminprogress.setVisibility(View.GONE);
         adminlogin.setOnClickListener(new View.OnClickListener() {
@@ -89,8 +90,9 @@ public class AdminActivity extends AppCompatActivity {
             }
         });
     }
+
     @Override
     public void onBackPressed() {
-        //
+        AdminActivity.this.finish();
     }
 }

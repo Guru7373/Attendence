@@ -24,9 +24,14 @@ import android.widget.ListView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import android.text.format.Time;
 import android.widget.ProgressBar;
@@ -37,18 +42,15 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+
+import javax.annotation.Nullable;
 
 public class TakeAttendenceActivity extends AppCompatActivity  implements AdapterView.OnItemSelectedListener {
 
-    private static final String TAG = TakeAttendenceActivity.class.getName();
     ListView student_list;
     ProgressBar progressBar;
-    List<String> serial = new ArrayList<String>();
-    List<String> enroll = new ArrayList<String>();
-    List<String> name = new ArrayList<String>();
-    String[] sl_item;
-    String[] id_item;
-    String[] name_item;
+    List<String> mylist = new ArrayList<>();
     int n;
     String section_selected = "";
     String[] Sections = {"1CSE", "2CSE", "3CSE", "4CSE", "5CSE"};
@@ -58,7 +60,9 @@ public class TakeAttendenceActivity extends AppCompatActivity  implements Adapte
     ArrayAdapter<String> aa;
     ArrayAdapterForTakeAttendence arrayAdapterForTakeAttendence;
     FirebaseFirestore mFirestore;
-    Intent intent_section;
+    Intent in,t;
+    String[] ids;
+    String te_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,44 +94,23 @@ public class TakeAttendenceActivity extends AppCompatActivity  implements Adapte
         spin.setAdapter(aa);
 
         progressBar.setVisibility(View.GONE);
+        Intent intents = getIntent();
+        te_id = intents.getStringExtra("take_id");
+
+        in = new Intent(this,TChoiceActivity.class);
+        in.putExtra("o_id",te_id);
 
         proceed_click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    try {
-                        progressBar.setVisibility(View.VISIBLE);
-                        DocumentReference dref = mFirestore.collection("section_list").document(section_selected);
-                        dref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    DocumentSnapshot documentSnapshot = task.getResult();
-                                    if (documentSnapshot != null) {
-                                        serial = (List<String>) task.getResult().get("sl_no");
-                                        enroll = (List<String>) task.getResult().get("id_no");
-                                        name = (List<String>) task.getResult().get("name");
-
-                                        callprepared();
-
-                                        intent_section = new Intent(getApplicationContext(),NextActivityOfTakeAttendence.class);
-                                        intent_section.putExtra("section_selected",section_selected);
-                                        
-                                        progressBar.setVisibility(View.GONE);
-                                    }
-                                } else {
-                                    progressBar.setVisibility(View.INVISIBLE);
-                                    Toast.makeText(getApplicationContext(), "Please select valid section", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-                    } catch (Exception e) {
-                        progressBar.setVisibility(View.INVISIBLE);
-                        Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                try {
+                    progressBar.setVisibility(View.VISIBLE);
+                    ids = new String[mylist.size()];
+                    for (int i = 0; i < mylist.size(); i++) {
+                        ids = mylist.toArray(ids);
                     }
-            }
-        });
-
-
+                    callprepared();
+                }catch(Exception e){e.toString();}
         btnselect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -146,27 +129,19 @@ public class TakeAttendenceActivity extends AppCompatActivity  implements Adapte
             }
         });
 
-        next_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),NextActivityOfTakeAttendence.class);
-                startActivity(intent);
-                startActivity(intent_section);
+                    next_btn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            startActivity(t);
+                        }
+                    });
             }
         });
     }
 
     private void callprepared() {
-        sl_item = new String[serial.size()];
-        id_item = new String[enroll.size()];
-        name_item = new String[name.size()];
-
-        sl_item = serial.toArray(sl_item);
-        id_item = enroll.toArray(id_item);
-        name_item = name.toArray(name_item);
-
-        n = sl_item.length;
-
+        n = ids.length;
+        progressBar.setVisibility(View.GONE);
         modelArrayList = getModel(true);
         arrayAdapterForTakeAttendence = new ArrayAdapterForTakeAttendence(this,modelArrayList);
         student_list.setAdapter(arrayAdapterForTakeAttendence);
@@ -178,21 +153,47 @@ public class TakeAttendenceActivity extends AppCompatActivity  implements Adapte
 
             ModelClass model = new ModelClass();
             model.setSelected(isSelect);
-            model.setSl_no(sl_item[i]);
-            model.setId_no(id_item[i]);
-            model.setName(name_item[i]);
+            model.setId_no(ids[i]);
             list_array.add(model);
         }
         return list_array;
     }
 
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         section_selected = Sections[position];
+
+
+
+        t = new Intent(this,NextActivityOfTakeAttendence.class);
+        t.putExtra("take_ID",te_id);
+        t.putExtra("sec",section_selected);
+
+        mylist.clear();
+
+        CollectionReference cref = mFirestore.collection(section_selected);
+        cref.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                if (queryDocumentSnapshots != null) {
+                    for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                        mylist.add(doc.getId());
+                    }
+                    System.out.println(mylist);
+                }
+            }
+        });
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+        startActivity(intent);
     }
 }

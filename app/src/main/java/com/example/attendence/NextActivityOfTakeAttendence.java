@@ -5,7 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.format.Time;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,38 +22,36 @@ public class NextActivityOfTakeAttendence extends AppCompatActivity {
 
     FirebaseFirestore db;
     Button save_btn;
-    TextView tv;
-    String[] p_id = new String[ArrayAdapterForTakeAttendence.model_list.size()];
-    String[] p_name = new String[ArrayAdapterForTakeAttendence.model_list.size()];
+    TextView tv_ids;
     String[] present_status = new String[ArrayAdapterForTakeAttendence.model_list.size()];
     String[] absent_status = new String[ArrayAdapterForTakeAttendence.model_list.size()];
-    String section,dates;
-    PojoClass modelClass = new PojoClass();
-    Map<String,String> list = new HashMap<>();
+    String my_section,dates,teach_id;
+    Map<Object,Object> list = new HashMap<>();
+    Intent in;
+    public int a;
+    ProgressBar pb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_next_of_take_attendence);
 
-        tv = (TextView) findViewById(R.id.tv);
+        tv_ids = (TextView) findViewById(R.id.tv);
         save_btn = findViewById(R.id.final_save_btn);
+        pb = findViewById(R.id.nxt_pgb);
 
         db = FirebaseFirestore.getInstance();
 
         for (int i = 0; i < ArrayAdapterForTakeAttendence.model_list.size(); i++){
             if(ArrayAdapterForTakeAttendence.model_list.get(i).getSelected())
             {
-               // tv.setText(tv.getText() + " " + ArrayAdapterForTakeAttendence.model_list.get(i).getId_no()+ " "+ ArrayAdapterForTakeAttendence.model_list.get(i).getName()+ " PRESENT "+ "\n");
-                p_id[i] = ArrayAdapterForTakeAttendence.model_list.get(i).getId_no();
-                present_status[i] =  tv.getText() + " " + ArrayAdapterForTakeAttendence.model_list.get(i).getId_no()+ " "+ ArrayAdapterForTakeAttendence.model_list.get(i).getName()+ " PRESENT "+ "\n";
-                tv.setText(present_status[i]);
+                present_status[i] =  tv_ids.getText() + " " + ArrayAdapterForTakeAttendence.model_list.get(i).getId_no()+ " PRESENT "+ "\n";
+                tv_ids.setText(present_status[i]);
             }
             if(!(ArrayAdapterForTakeAttendence.model_list.get(i).getSelected()))
             {
-                absent_status[i] = tv.getText() + " " + ArrayAdapterForTakeAttendence.model_list.get(i).getId_no()+ " "+ ArrayAdapterForTakeAttendence.model_list.get(i).getName()+ " ABSENT "+ "\n";
-                tv.setText(absent_status[i]);
-                //tv.setText(tv.getText() + " " + ArrayAdapterForTakeAttendence.model_list.get(i).getId_no()+ " "+ ArrayAdapterForTakeAttendence.model_list.get(i).getName()+ " ABSENT "+"\n");
+                absent_status[i] = tv_ids.getText() + " " + ArrayAdapterForTakeAttendence.model_list.get(i).getId_no()+ " ABSENT "+ "\n";
+                tv_ids.setText(absent_status[i]);
             }
 
         }
@@ -61,59 +61,44 @@ public class NextActivityOfTakeAttendence extends AppCompatActivity {
         String dd = String.valueOf(today.monthDay);
         String mm = String.valueOf(today.month + 1);
         String yy = String.valueOf(today.year);
-        dates = dd + "-" + mm + "-" + yy;
 
-        final Map<String,String> final_p_date = new HashMap<>();
-        final Map<String,String> final_p_id = new HashMap<>();
+        dates = dd+"-"+mm+"-"+yy;
 
-        String[] keys = new String[present_status.length];
-
-        for(int i=0;i<present_status.length;i++){
-            keys[i] = String.valueOf(i);
-        }
-
-        if(keys.length == present_status.length){
-            for(int index = 0; index < keys.length; index++){
-//                final_p_id.put(keys[index], p_id[index]);
-                modelClass.setP_id(p_id[index]);
-            }
-        }
-
-        if(keys.length == present_status.length){
-            for(int index = 0; index < keys.length; index++){
-//                final_p_date.put(keys[index], dates);
-                modelClass.setP_name(p_name[index]);
-            }
-        }
-
-//        if(keys.length == present_status.length){
-//            for(int index = 0; index < keys.length; index++){
-//                final_present_status.put(keys[index], present_status[index]);
-//            }
-//        }
-
-        Intent intent = getIntent();
-        section = intent.getStringExtra("section_selected");
+        in = new Intent(this,TChoiceActivity.class);
 
         save_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                db.collection("Attendence").document(section)
-//                        .set(final_p_date).addOnSuccessListener(new OnSuccessListener<Void>() {
-//                    @Override
-//                    public void onSuccess(Void aVoid) {
-//                        Toast.makeText(getApplicationContext(),"Saved",Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-                db.collection("Attendence").document(section)
+                pb.setVisibility(View.VISIBLE);
+                Intent t = getIntent();
+                teach_id = t.getStringExtra("take_ID");
+                my_section = t.getStringExtra("sec");
+
+                in.putExtra("my_id",teach_id);
+
+                String st[] = tv_ids.getText().toString().split("\n");
+                a = st.length;
+                    for (int i = 0; i < a; i++) {
+                        list.put(""+i+"", st[i]);
+                    }
+                db.collection("Attendence").document(teach_id).collection(my_section).document(dates)
                         .set(list).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Toast.makeText(getApplicationContext(),"Saved",Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                        startActivity(intent);
+                        pb.setVisibility(View.GONE);
                     }
                 });
 
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this,MainActivity.class);
+        startActivity(intent);
     }
 }

@@ -85,6 +85,7 @@ public class UpdateTeacherActivity extends AppCompatActivity {
                                             et_pass.setText(fetched_pass);
                                             et_confpass.setText(fetched_pass);
 
+                                            fet_btn.setEnabled(false);
                                             updatebtn.setEnabled(true);
 
                                             et_ids.setEnabled(false);
@@ -140,7 +141,6 @@ public class UpdateTeacherActivity extends AppCompatActivity {
                     update_ref.update("Name",update_name);
                     update_ref.update("Subject Name",update_sub);
                     update_ref.update("password",update_pass)
-//                            db.updateChildren(list);
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(@NonNull Void task) {

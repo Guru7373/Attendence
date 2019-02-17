@@ -5,14 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#33333d"
-    tools:context=".AddStudentActivity">
+    tools:context=".DeleteStudentActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <TextView
-            android:text="Add Student"
+            android:text="Delete Student"
             android:textColor="@color/colorPrimary"
             android:gravity="center"
             android:textStyle="bold"
@@ -34,11 +34,12 @@
                 android:layout_marginTop="70dp">
 
                 <EditText
-                    android:id="@+id/et_add_stud_name"
+                    android:focusable="false"
+                    android:id="@+id/et_delete_stud_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Student Name"
-                    android:maxLines="1"
+                    android:textColorHint="#000"
                     android:paddingLeft="10dp"/>
 
             </android.support.design.widget.TextInputLayout>
@@ -49,38 +50,60 @@
                 android:layout_marginTop="20dp">
 
                 <EditText
-                    android:id="@+id/et_add_stud_id"
+                    android:id="@+id/et_delete_stud__id"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Student ID (eg: 2015CSE144)"
+                    android:hint="Student ID (Eg:2015CSE144)"
                     android:paddingLeft="10dp"
-                    android:inputType="text"
+                    android:textColorHint="#000"
+                    android:maxLines="1"
                     android:maxLength="10" />
 
             </android.support.design.widget.TextInputLayout>
 
-            <android.support.v7.widget.AppCompatSpinner
-                android:id="@+id/et_sec_spin"
-                android:theme="@style/Spinner"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="130dp"/>
-
-            <Button
-                android:id="@+id/btn_add_stud"
-                android:background="@drawable/button_bg"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="120dp">
+
+                <EditText
+                    android:focusable="false"
+                    android:id="@+id/et_delete_stud_sec"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="section"
+                    android:textColorHint="#000"
+                    android:paddingLeft="10dp"
+                    android:maxLines="1" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/btn_stud_fetch_delete"
+                android:background="@drawable/button_bg"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="210dp"
-                android:layout_marginLeft="60dp"
-                android:layout_marginRight="60dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="200dp"
                 android:layout_marginBottom="30dp"
-                android:text="Save" />
+                android:text="Fetch" />
+
+            <Button
+                android:id="@+id/btn_stud_delete"
+                android:background="@drawable/button_bg"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="210dp"
+                android:layout_marginLeft="190dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginBottom="30dp"
+                android:text="Delete" />
 
             <ProgressBar
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:id="@+id/add_stud_progress"
+                android:id="@+id/delete_stud_progress"
                 android:layout_gravity="center"
                 android:visibility="gone"/>
 

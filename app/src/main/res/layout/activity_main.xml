@@ -35,7 +35,7 @@
         
         <EditText
             android:id="@+id/et_teacher_id"
-            android:inputType="textEmailAddress"
+            android:inputType="number"
             android:layout_marginTop="40dp"
             android:layout_marginLeft="10dp"
             android:maxLength="3"

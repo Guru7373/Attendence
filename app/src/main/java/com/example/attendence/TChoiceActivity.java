@@ -15,6 +15,8 @@ public class TChoiceActivity extends AppCompatActivity {
     TextView takeattendence,viewattendence;
     Button teach_logout;
     FirebaseAuth mAuth;
+    Intent in,i;
+    String s;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,20 +28,35 @@ public class TChoiceActivity extends AppCompatActivity {
         teach_logout = findViewById(R.id.teacher_logout);
         mAuth = FirebaseAuth.getInstance();
 
+        Intent intent = getIntent();
+        s = intent.getStringExtra("Teacher_ID");
+        if(s == null)
+        {
+            s = intent.getStringExtra("o_id");
+            s = intent.getStringExtra("my_id");
+            s = intent.getStringExtra("t_id");
+        }
+
+
+        Toast.makeText(getApplicationContext(),"Welcome "+ s, Toast.LENGTH_SHORT).show();
+
+        in = new Intent(this,TakeAttendenceActivity.class);
+
+        i = new Intent(this,ViewAttendenceActivity.class);
 
         takeattendence.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent( TChoiceActivity.this,TakeAttendenceActivity.class));
-                finish();
+                in.putExtra("take_id",s);
+                startActivity(in);
             }
         });
 
         viewattendence.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(TChoiceActivity.this,ViewAttendenceActivity.class));
-                finish();
+                i.putExtra("id",s);
+                startActivity(i);
             }
         });
 
@@ -49,7 +66,6 @@ public class TChoiceActivity extends AppCompatActivity {
             public void onClick(View v) {
                 startActivity(new Intent(TChoiceActivity.this,MainActivity.class));
                 Toast.makeText(getApplicationContext(),"Logged out",Toast.LENGTH_SHORT).show();
-                finish();
             }
         });
     }

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#33333d"
+    tools:context=".UpdateStudentActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <TextView
+        android:text="Update Student"
+        android:textColor="@color/colorPrimary"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:layout_marginTop="40dp"
+        android:textSize="24sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <android.support.v7.widget.CardView
+        android:layout_width="400dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="140dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp">
+
+            <EditText
+                android:enabled="false"
+                android:id="@+id/et_update_stud_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Student Name"
+                android:paddingLeft="10dp"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+
+            <EditText
+                android:enabled="true"
+                android:id="@+id/et_update_stud__id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Student ID (Eg:2015CSE144)"
+                android:paddingLeft="10dp"
+                android:maxLines="1"
+                android:maxLength="10" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="120dp">
+
+            <EditText
+                android:enabled="false"
+                android:id="@+id/et_update_stud_sec"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="section"
+                android:paddingLeft="10dp"
+                android:maxLines="1" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <Button
+            android:id="@+id/btn_stud_fetch_update"
+            android:background="@drawable/button_bg"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="210dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="200dp"
+            android:layout_marginBottom="30dp"
+            android:text="Fetch" />
+
+        <Button
+            android:id="@+id/btn_stud_update"
+            android:background="@drawable/button_bg"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="210dp"
+            android:layout_marginLeft="190dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginBottom="30dp"
+            android:text="Update" />
+
+        <ProgressBar
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:id="@+id/update_stud_progress"
+            android:layout_gravity="center"
+            android:visibility="gone"/>
+
+    </android.support.v7.widget.CardView>
+    </RelativeLayout>
+</ScrollView>
