@@ -107,6 +107,11 @@ public class ViewAttendenceActivity extends AppCompatActivity implements Adapter
                                             }
                                         }
                                     }
+                                    else
+                                    {
+                                        Toast.makeText(getApplicationContext(),"No Record Found",Toast.LENGTH_SHORT).show();
+                                        progressBar.setVisibility(View.GONE);
+                                    }
                                     progressBar.setVisibility(View.GONE);
                                 }
                                 else

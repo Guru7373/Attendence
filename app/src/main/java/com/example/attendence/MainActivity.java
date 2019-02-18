@@ -103,16 +103,27 @@ public class MainActivity extends AppCompatActivity {
                             if(user_id.equals(db_id) && user_pass.equals(db_pass))
                             {
                                 progressBar.setVisibility(View.GONE);
-                                Intent intent = new Intent(getApplicationContext(),TChoiceActivity.class);
-                                intent.putExtra("Teacher_ID",user_id);
-                                startActivity(intent);
-                                Toast toast = Toast.makeText(getApplicationContext(),"Login Successful",Toast.LENGTH_SHORT);
-                                View view = toast.getView();
-                                view.getBackground().setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_IN);
-                                TextView toastMessage = (TextView) toast.getView().findViewById(android.R.id.message);
-                                toastMessage.setTextColor(R.drawable.toast_colour);
-                                toastMessage.setTextColor(Color.BLACK);
-                                toast.show();
+                                db.collection("Teachers_list").document(user_id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            DocumentSnapshot doc = task.getResult();
+                                            if (doc != null) {
+                                                String db_name = doc.getString("Name");
+                                                Intent intent = new Intent(getApplicationContext(),TChoiceActivity.class);
+                                                intent.putExtra("Teacher_ID",db_name);
+                                                startActivity(intent);
+                                            }
+                                        }
+                                    }
+                                });
+//                                Toast toast = Toast.makeText(getApplicationContext(),"Login Successful",Toast.LENGTH_SHORT);
+//                                View view = toast.getView();
+//                                view.getBackground().setColorFilter(Color.YELLOW, PorterDuff.Mode.SRC_IN);
+//                                TextView toastMessage = (TextView) toast.getView().findViewById(android.R.id.message);
+//                                toastMessage.setTextColor(R.drawable.toast_colour);
+//                                toastMessage.setTextColor(Color.BLACK);
+//                                toast.show();
                             }
                             else
                             {

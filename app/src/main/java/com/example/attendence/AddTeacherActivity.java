@@ -59,12 +59,28 @@ public class AddTeacherActivity extends AppCompatActivity {
                 conf_pass = confpass.getText().toString();
                 sub_name = subname.getText().toString().toUpperCase();
 
-                if(given_name.equals("") && given_id.equals("") && given_pass.equals("") && conf_pass.equals("") && sub_name.equals(""))
+                if(given_name.equals(""))
                 {
                     name.setError("Required");
+                    progressBar.setVisibility(View.GONE);
+                }
+                else if(given_id.equals(""))
+                {
                     ids.setError("Required");
+                    progressBar.setVisibility(View.GONE);
+                }
+                else if(given_pass.equals(""))
+                {
                     pass.setError("Required");
+                    progressBar.setVisibility(View.GONE);
+                }
+                else if(conf_pass.equals(""))
+                {
                     confpass.setError("Required");
+                    progressBar.setVisibility(View.GONE);
+                }
+                else if(sub_name.equals(""))
+                {
                     subname.setError("Required");
                     progressBar.setVisibility(View.GONE);
                 }

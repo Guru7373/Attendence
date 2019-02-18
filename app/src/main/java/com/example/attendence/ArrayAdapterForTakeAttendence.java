@@ -90,7 +90,8 @@ public class ArrayAdapterForTakeAttendence extends BaseAdapter {
 
                 View tempview = (View) holder.checkBox.getTag(R.integer.btnplusview);
                 Integer pos = (Integer)  holder.checkBox.getTag();
-                Toast.makeText(context, "Checkbox "+pos+" clicked!", Toast.LENGTH_SHORT).show();
+
+                //Toast.makeText(context, "Checkbox "+pos+" clicked!", Toast.LENGTH_SHORT).show();
 
                 if(model_list.get(pos).getSelected())
                 {

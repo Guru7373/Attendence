@@ -1,6 +1,8 @@
 package com.example.attendence;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.format.Time;
@@ -85,7 +87,13 @@ public class NextActivityOfTakeAttendence extends AppCompatActivity {
                         .set(list).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(getApplicationContext(),"Saved",Toast.LENGTH_SHORT).show();
+                       Toast toast= Toast.makeText(getApplicationContext(),"Saved",Toast.LENGTH_SHORT);
+                                View view = toast.getView();
+                              //  view.getBackground().setColorFilter(R.color.colorAccent, PorterDuff.Mode.SRC_IN);
+                                TextView toastMessage = (TextView) toast.getView().findViewById(android.R.id.message);
+                                toastMessage.setTextColor(R.drawable.toast_colour);
+                                toastMessage.setTextColor(Color.GREEN);
+                                toast.show();
                         Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                         startActivity(intent);
                         pb.setVisibility(View.GONE);

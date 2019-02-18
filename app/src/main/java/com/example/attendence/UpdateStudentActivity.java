@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -33,7 +35,8 @@ import javax.annotation.Nullable;
 
 public class UpdateStudentActivity extends AppCompatActivity {
 
-    EditText et_stud_id,et_stud_name,et_stud_sect;
+    EditText et_stud_id,et_stud_name;
+    AutoCompleteTextView et_stud_sect;
     String student_id,student_name,student_section,sec,fetched_student_section;
     Button btn_fetch,btn_update;
     ProgressBar progressBar;
@@ -41,6 +44,7 @@ public class UpdateStudentActivity extends AppCompatActivity {
     Map<String,String> list = new HashMap<>();
     List<String> mylist = new ArrayList<>();
     String[] secs = {"1CSE","2CSE","3CSE","4CSE","5CSE"};
+    ArrayAdapter aa;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +61,10 @@ public class UpdateStudentActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
         btn_update.setEnabled(false);
+
+        aa = new ArrayAdapter(this,android.R.layout.select_dialog_item,secs);
+        et_stud_sect.setThreshold(1);
+        et_stud_sect.setAdapter(aa);
 
         btn_fetch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,16 +100,14 @@ public class UpdateStudentActivity extends AppCompatActivity {
                                         {
                                             rest_of_the_action();
                                         }
-                                        else
-                                        {
-                                            progressBar.setVisibility(View.GONE);
-                                            Toast.makeText(getApplicationContext(),student_id + " Doesnot Exist",Toast.LENGTH_SHORT).show();
-                                        }
                                     }
                                     Log.d("My list data",mylist.toString());
                                     System.out.println(mylist);
                                 }
+
+                                progressBar.setVisibility(View.GONE);
                             }
+
                         }
 
                         private void rest_of_the_action() {
@@ -141,6 +147,11 @@ public class UpdateStudentActivity extends AppCompatActivity {
                         }
                     });
                 }
+                if(!(mylist.contains(student_id)))
+                {
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(getApplicationContext(),"No Record Found",Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -150,67 +161,69 @@ public class UpdateStudentActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.VISIBLE);
                 student_name = et_stud_name.getText().toString();
                 student_section = et_stud_sect.getText().toString().toUpperCase();
-
-                list.put("Student ID",student_id);
-                list.put("Student Name",student_name);
-                list.put("Section",student_section);
-
-                if(!(student_section.equals(fetched_student_section)))
+                if(!(student_section.equals("1CSE")||student_section.equals("2CSE")||student_section.equals("3CSE")||student_section.equals("4CSE")||student_section.equals("5CSE")))
                 {
-                    DocumentReference dref = db.collection(fetched_student_section).document(student_id);
-                    dref.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Toast.makeText(getApplicationContext(),"Student ID moved from "+ fetched_student_section + " to " + student_section,Toast.LENGTH_SHORT).show();
-                            perform_updation();
-                        }
-
-                        private void perform_updation() {
-                            DocumentReference dref = db.collection(student_section).document(student_id);
-                            dref.set(list).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    Toast.makeText(getApplicationContext(),"Student ID "+ student_id +" Updated",Toast.LENGTH_SHORT).show();
-
-                                    et_stud_id.setText("");
-                                    et_stud_name.setText("");
-                                    et_stud_sect.setText("");
-
-                                    et_stud_name.setEnabled(false);
-                                    et_stud_sect.setEnabled(false);
-                                    et_stud_id.setEnabled(true);
-
-                                    btn_fetch.setEnabled(true);
-                                    btn_update.setEnabled(false);
-
-                                    progressBar.setVisibility(View.GONE);
-                                }
-                            });
-                        }
-                    });
+                    Toast.makeText(getApplicationContext(),"Enter Valid Section",Toast.LENGTH_SHORT).show();
                 }
-                else
-                {
-                    DocumentReference dref = db.collection(fetched_student_section).document(student_id);
-                    dref.set(list).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Toast.makeText(getApplicationContext(), "Student ID " + student_id + " Updated", Toast.LENGTH_SHORT).show();
+                else {
+                    list.put("Student ID", student_id);
+                    list.put("Student Name", student_name);
+                    list.put("Section", student_section);
 
-                            et_stud_id.setText("");
-                            et_stud_name.setText("");
-                            et_stud_sect.setText("");
+                    if (!(student_section.equals(fetched_student_section))) {
+                        DocumentReference dref = db.collection(fetched_student_section).document(student_id);
+                        dref.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(getApplicationContext(), "Student ID moved from " + fetched_student_section + " to " + student_section, Toast.LENGTH_SHORT).show();
+                                perform_updation();
+                            }
 
-                            et_stud_name.setEnabled(false);
-                            et_stud_sect.setEnabled(false);
-                            et_stud_id.setEnabled(true);
+                            private void perform_updation() {
+                                DocumentReference dref = db.collection(student_section).document(student_id);
+                                dref.set(list).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Toast.makeText(getApplicationContext(), "Student ID " + student_id + " Updated", Toast.LENGTH_SHORT).show();
 
-                            btn_fetch.setEnabled(true);
-                            btn_update.setEnabled(false);
+                                        et_stud_id.setText("");
+                                        et_stud_name.setText("");
+                                        et_stud_sect.setText("");
 
-                            progressBar.setVisibility(View.GONE);
-                        }
-                    });
+                                        et_stud_name.setEnabled(false);
+                                        et_stud_sect.setEnabled(false);
+                                        et_stud_id.setEnabled(true);
+
+                                        btn_fetch.setEnabled(true);
+                                        btn_update.setEnabled(false);
+
+                                        progressBar.setVisibility(View.GONE);
+                                    }
+                                });
+                            }
+                        });
+                    } else {
+                        DocumentReference dref = db.collection(fetched_student_section).document(student_id);
+                        dref.set(list).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(getApplicationContext(), "Student ID " + student_id + " Updated", Toast.LENGTH_SHORT).show();
+
+                                et_stud_id.setText("");
+                                et_stud_name.setText("");
+                                et_stud_sect.setText("");
+
+                                et_stud_name.setEnabled(false);
+                                et_stud_sect.setEnabled(false);
+                                et_stud_id.setEnabled(true);
+
+                                btn_fetch.setEnabled(true);
+                                btn_update.setEnabled(false);
+
+                                progressBar.setVisibility(View.GONE);
+                            }
+                        });
+                    }
                 }
             }
         });

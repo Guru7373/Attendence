@@ -121,11 +121,23 @@ public class UpdateTeacherActivity extends AppCompatActivity {
                 update_conf_pass = et_confpass.getText().toString();
                 update_sub = et_subname.getText().toString();
 
-                if(update_name.equals("") && update_pass.equals("") && update_conf_pass.equals("") && update_sub.equals(""))
+                if(update_name.equals(""))
                 {
                     et_name.setError("Required");
+                    progressBar.setVisibility(View.GONE);
+                }
+                else if(update_pass.equals(""))
+                {
                     et_pass.setError("Required");
+                    progressBar.setVisibility(View.GONE);
+                }
+                else if(update_conf_pass.equals(""))
+                {
                     et_confpass.setError("Required");
+                    progressBar.setVisibility(View.GONE);
+                }
+                else if(update_sub.equals(""))
+                {
                     et_subname.setError("Required");
                     progressBar.setVisibility(View.GONE);
                 }
@@ -160,6 +172,7 @@ public class UpdateTeacherActivity extends AppCompatActivity {
                                     et_confpass.setText("");
 
                                     updatebtn.setEnabled(false);
+                                    fet_btn.setEnabled(true);
                                     Toast.makeText(getApplicationContext(),"Teacher ID " + given_id + " Updated ",Toast.LENGTH_LONG).show();
                                     progressBar.setVisibility(View.GONE);
                             }
